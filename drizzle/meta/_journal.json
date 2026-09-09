@@ -8,6 +8,13 @@
       "when": 1788877705728,
       "tag": "0000_known_terrax",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788954172071,
+      "tag": "0001_equal_nekra",
+      "breakpoints": true
     }
   ]
 }
