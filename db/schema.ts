@@ -258,7 +258,10 @@ export const recipes = pgTable("recipes", {
   ingredients: text("ingredients").array().notNull(),
   instructions: text("instructions").array().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
 });
 
 export const cookbookEntries = pgTable("cookbook_entries", {
