@@ -63,3 +63,11 @@ export async function getUserCookbook(userId: string) {
     .where(eq(cookbookEntries.userId, userId))
     .orderBy(desc(cookbookEntries.addedAt));
 }
+
+// Types inferred from DB query responses with joins
+export type RecipeWithCreator = Awaited<
+  ReturnType<typeof getAllRecipes>
+>[number];
+export type CookbookEntryWithRecipe = Awaited<
+  ReturnType<typeof getUserCookbook>
+>[number];
