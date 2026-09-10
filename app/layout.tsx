@@ -1,5 +1,6 @@
+import Header from "@/components/Header";
 import { authClient } from "@/lib/auth/client";
-import { NeonAuthUIProvider, UserButton } from "@neondatabase/auth/react";
+import { NeonAuthUIProvider } from "@neondatabase/auth/react";
 import type { Metadata } from "next";
 
 import "./globals.css";
@@ -14,10 +15,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" suppressHydrationWarning>
       <body>
         <NeonAuthUIProvider authClient={authClient}>
-          <header className="flex h-16 items-center justify-between border-b p-4">
-            <nav></nav>
-            <UserButton size="icon" />
-          </header>
+          <Header />
           {children}
         </NeonAuthUIProvider>
       </body>
