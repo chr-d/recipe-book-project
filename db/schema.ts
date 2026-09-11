@@ -277,3 +277,9 @@ export const cookbookEntries = pgTable("cookbook_entries", {
   personalNotes: text("personal_notes"),
   addedAt: timestamp("added_at").defaultNow().notNull(),
 });
+
+// Types inferred directly from DB schema
+export type Recipe = typeof recipes.$inferSelect;
+export type NewRecipe = typeof recipes.$inferInsert;
+export type CookbookEntry = typeof cookbookEntries.$inferSelect;
+export type AuthUser = typeof userInNeonAuth.$inferSelect;
