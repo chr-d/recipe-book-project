@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { cookbookEntries, recipes, userInNeonAuth } from "@/db/schema";
-import { desc, eq, ilike } from "drizzle-orm";
+import { and, arrayContains, desc, eq, ilike, or } from "drizzle-orm";
 
 // PUBLIC: All recipes
 export async function getAllRecipes() {
@@ -23,7 +23,13 @@ export async function searchRecipes(query: string) {
     })
     .from(recipes)
     .innerJoin(userInNeonAuth, eq(recipes.userId, userInNeonAuth.id))
-    .where(ilike(recipes.title, `%${query}%`))
+    .where(
+      or(
+        ilike(recipes.title, `%${query}%`),
+        ilike(recipes.description, `%${query}%`),
+        arrayContains(recipes.tags, [query.toLowerCase()]),
+      ),
+    )
     .orderBy(desc(recipes.createdAt));
 }
 
@@ -41,16 +47,27 @@ export async function getRecipeById(id: number) {
 }
 
 // PROTECTED: User's own recipes for dashboard
-export async function getUserRecipes(userId: string) {
+export async function getUserRecipes(userId: string, query?: string) {
   return db
     .select()
     .from(recipes)
-    .where(eq(recipes.userId, userId))
+    .where(
+      and(
+        eq(recipes.userId, userId),
+        query
+          ? or(
+              ilike(recipes.title, `%${query}%`),
+              ilike(recipes.description, `%${query}%`),
+              arrayContains(recipes.tags, [query.toLowerCase()]),
+            )
+          : undefined,
+      ),
+    )
     .orderBy(desc(recipes.createdAt));
 }
 
 // PROTECTED: User's cookbook entries
-export async function getUserCookbook(userId: string) {
+export async function getUserCookbook(userId: string, query?: string) {
   return db
     .select({
       entry: cookbookEntries,
@@ -60,7 +77,19 @@ export async function getUserCookbook(userId: string) {
     .from(cookbookEntries)
     .innerJoin(recipes, eq(cookbookEntries.recipeId, recipes.id))
     .innerJoin(userInNeonAuth, eq(recipes.userId, userInNeonAuth.id))
-    .where(eq(cookbookEntries.userId, userId))
+    .where(
+      and(
+        eq(cookbookEntries.userId, userId),
+        query
+          ? or(
+              ilike(recipes.title, `%${query}%`),
+              ilike(recipes.description, `%${query}%`),
+              arrayContains(recipes.tags, [query.toLowerCase()]),
+              ilike(cookbookEntries.personalNotes, `%${query}%`),
+            )
+          : undefined,
+      ),
+    )
     .orderBy(desc(cookbookEntries.addedAt));
 }
 
