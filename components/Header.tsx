@@ -16,6 +16,18 @@ export default function Header() {
             href: "/dashboard",
             label: "Dashboard",
             signedIn: true,
+            separator: false,
+          },
+          {
+            href: "/dashboard/my-recipes",
+            label: "My Recipes",
+            signedIn: true,
+            separator: false,
+          },
+          {
+            href: "/dashboard/cookbook",
+            label: "My Cookbook",
+            signedIn: true,
             separator: true,
           },
         ]}
