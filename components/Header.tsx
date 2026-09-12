@@ -9,7 +9,17 @@ export default function Header() {
         <Link href={"/recipes"}>Recipes List</Link>
         <Link href={"/recipes/1"}>Recipe Details</Link>
       </nav>
-      <UserButton size="icon" />
+      <UserButton
+        size="icon"
+        additionalLinks={[
+          {
+            href: "/dashboard",
+            label: "Dashboard",
+            signedIn: true,
+            separator: true,
+          },
+        ]}
+      />
     </header>
   );
 }
