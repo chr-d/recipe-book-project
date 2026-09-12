@@ -1,3 +1,5 @@
+import { RecipeForm } from "@/components/RecipeForm";
+
 export default function AddRecipe() {
-  return <h1>Add Recipe Page</h1>;
+  return <RecipeForm />;
 }
