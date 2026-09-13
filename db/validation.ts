@@ -33,10 +33,9 @@ export const recipeSchema = createInsertSchema(recipes, {
 
 export type RecipeInput = z.infer<typeof recipeSchema>;
 
-export const addToCookbookSchema = createInsertSchema(cookbookEntries, {
-  personalNotes: (schema) =>
-    schema.max(1000, "Notes must be under 1000 characters").optional(),
-}).omit({ userId: true, addedAt: true, id: true });
+export const addToCookbookSchema = z.object({
+  recipeId: z.number().int().positive("Invalid recipe"),
+});
 
 export const updateNotesSchema = createUpdateSchema(cookbookEntries, {
   personalNotes: (schema) =>
