@@ -1,10 +1,10 @@
 import { db } from "@/db";
 import { cookbookEntries, recipes, userInNeonAuth } from "@/db/schema";
-import { desc, eq, ilike } from "drizzle-orm";
+import { and, arrayContains, desc, eq, ilike, or } from "drizzle-orm";
 
 // PUBLIC: All recipes
-export async function getAllRecipes() {
-  return db
+export async function getAllRecipes(limit?: number) {
+  const query = db
     .select({
       recipe: recipes,
       creatorName: userInNeonAuth.name,
@@ -12,22 +12,32 @@ export async function getAllRecipes() {
     .from(recipes)
     .innerJoin(userInNeonAuth, eq(recipes.userId, userInNeonAuth.id))
     .orderBy(desc(recipes.createdAt));
+
+  return await (limit ? query.limit(limit) : query);
 }
 
 // PUBLIC: Search across all recipes
-export async function searchRecipes(query: string) {
-  return db
+export async function searchRecipes(searchQuery: string, limit?: number) {
+  const query = db
     .select({
       recipe: recipes,
       creatorName: userInNeonAuth.name,
     })
     .from(recipes)
     .innerJoin(userInNeonAuth, eq(recipes.userId, userInNeonAuth.id))
-    .where(ilike(recipes.title, `%${query}%`))
+    .where(
+      or(
+        ilike(recipes.title, `%${searchQuery}%`),
+        ilike(recipes.description, `%${searchQuery}%`),
+        arrayContains(recipes.tags, [searchQuery.toLowerCase()]),
+      ),
+    )
     .orderBy(desc(recipes.createdAt));
+
+  return await (limit ? query.limit(limit) : query);
 }
 
-// PUBLIC: Single recipe detail
+// PUBLIC: Single recipe detail (No limit needed)
 export async function getRecipeById(id: number) {
   const result = await db
     .select({
@@ -41,17 +51,38 @@ export async function getRecipeById(id: number) {
 }
 
 // PROTECTED: User's own recipes for dashboard
-export async function getUserRecipes(userId: string) {
-  return db
+export async function getUserRecipes(
+  userId: string,
+  searchQuery?: string,
+  limit?: number,
+) {
+  const query = db
     .select()
     .from(recipes)
-    .where(eq(recipes.userId, userId))
+    .where(
+      and(
+        eq(recipes.userId, userId),
+        searchQuery
+          ? or(
+              ilike(recipes.title, `%${searchQuery}%`),
+              ilike(recipes.description, `%${searchQuery}%`),
+              arrayContains(recipes.tags, [searchQuery.toLowerCase()]),
+            )
+          : undefined,
+      ),
+    )
     .orderBy(desc(recipes.createdAt));
+
+  return await (limit ? query.limit(limit) : query);
 }
 
 // PROTECTED: User's cookbook entries
-export async function getUserCookbook(userId: string) {
-  return db
+export async function getUserCookbook(
+  userId: string,
+  searchQuery?: string,
+  limit?: number,
+) {
+  const query = db
     .select({
       entry: cookbookEntries,
       recipe: recipes,
@@ -60,8 +91,22 @@ export async function getUserCookbook(userId: string) {
     .from(cookbookEntries)
     .innerJoin(recipes, eq(cookbookEntries.recipeId, recipes.id))
     .innerJoin(userInNeonAuth, eq(recipes.userId, userInNeonAuth.id))
-    .where(eq(cookbookEntries.userId, userId))
+    .where(
+      and(
+        eq(cookbookEntries.userId, userId),
+        searchQuery
+          ? or(
+              ilike(recipes.title, `%${searchQuery}%`),
+              ilike(recipes.description, `%${searchQuery}%`),
+              arrayContains(recipes.tags, [searchQuery.toLowerCase()]),
+              ilike(cookbookEntries.personalNotes, `%${searchQuery}%`),
+            )
+          : undefined,
+      ),
+    )
     .orderBy(desc(cookbookEntries.addedAt));
+
+  return await (limit ? query.limit(limit) : query);
 }
 
 // Types inferred from DB query responses with joins
