@@ -109,6 +109,24 @@ export async function getUserCookbook(
   return await (limit ? query.limit(limit) : query);
 }
 
+// Cookbook entry for user and recipe ID
+export async function getCookbookEntryForRecipe(
+  userId: string,
+  recipeId: number,
+) {
+  const result = await db
+    .select()
+    .from(cookbookEntries)
+    .where(
+      and(
+        eq(cookbookEntries.userId, userId),
+        eq(cookbookEntries.recipeId, recipeId),
+      ),
+    )
+    .limit(1);
+  return result[0] ?? null;
+}
+
 // Types inferred from DB query responses with joins
 export type RecipeWithCreator = Awaited<
   ReturnType<typeof getAllRecipes>
