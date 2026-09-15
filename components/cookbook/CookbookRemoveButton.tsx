@@ -14,8 +14,12 @@ export function CookbookRemoveButton({ entryId }: { entryId: number }) {
   }
 
   return (
-    <button onClick={handleRemove} disabled={pending}>
-      {pending ? "Removing…" : "Remove"}
+    <button
+      onClick={handleRemove}
+      disabled={pending}
+      className="btn btn-sm btn-error self-start"
+    >
+      {pending ? "Removing…" : "Remove from Cookbook"}
     </button>
   );
 }
