@@ -14,6 +14,7 @@ export function SearchBar({ initialQuery }: { initialQuery: string }) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setValue(searchParams.get("q") ?? "");
   }, [searchParams]);
 
@@ -41,8 +42,8 @@ export function SearchBar({ initialQuery }: { initialQuery: string }) {
   }
 
   return (
-    <div className="relative">
-      <label className="input">
+    <div className="relative mx-auto mb-8 max-w-md">
+      <label className="input flex w-full">
         <svg
           className="h-[1em] opacity-50"
           xmlns="http://www.w3.org/2000/svg"
@@ -61,6 +62,7 @@ export function SearchBar({ initialQuery }: { initialQuery: string }) {
         </svg>
         <input
           type="search"
+          className="flex-1"
           placeholder="Search recipes"
           value={value}
           onChange={(e) => {

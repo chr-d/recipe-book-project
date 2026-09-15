@@ -16,7 +16,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <NeonAuthUIProvider authClient={authClient}>
           <Header />
-          {children}
+          <div className="mx-auto w-full max-w-6xl px-4 pb-12 pt-6">
+            {children}
+          </div>
         </NeonAuthUIProvider>
       </body>
     </html>

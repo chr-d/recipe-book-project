@@ -7,5 +7,9 @@ export default async function AccountPage({
   params: Promise<{ path: string }>;
 }) {
   const { path } = await params;
-  return <AccountView path={path} />;
+  return (
+    <div className="flex min-h-[calc(100dvh-4rem)] items-center justify-center">
+      <AccountView path={path} />
+    </div>
+  );
 }
