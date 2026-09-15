@@ -9,19 +9,20 @@ type Entry = { id: string; text: string };
 let uid = 0;
 const nextId = () => `entry-${++uid}`;
 
-const btnClass =
-  "inline-flex cursor-pointer rounded border-none bg-transparent p-1 disabled:cursor-not-allowed disabled:opacity-50";
+const btnClass = "shrink-0 text-lg leading-none disabled:opacity-30";
 
 function Row({
   entry,
   index,
   total,
+  numbered,
   onRemove,
   onMove,
 }: {
   entry: Entry;
   index: number;
   total: number;
+  numbered: boolean;
   onRemove: (id: string) => void;
   onMove: (from: number, to: number) => void;
 }) {
@@ -30,46 +31,55 @@ function Row({
   return (
     <li
       ref={ref}
-      className={`flex items-center gap-1 rounded-lg border border-neutral-300 bg-white px-2 py-1.5 ${
-        isDragging ? "opacity-60" : "opacity-100"
+      className={`rounded-field border-base-200 bg-base-100 hover:border-base-300 mx-2 flex flex-wrap items-center gap-3 border px-3 py-2 transition-shadow sm:flex-nowrap ${
+        isDragging ? "opacity-60 shadow-lg" : ""
       }`}
     >
       <span
         ref={handleRef}
-        className="inline-flex cursor-grab touch-none text-neutral-500"
+        className="rounded-field bg-base-300/60 flex h-6 w-9 shrink-0 cursor-grab touch-none items-center justify-center select-none"
+        aria-hidden
       >
-        ↕️
+        {numbered ? (
+          <span className="text-xs font-semibold">{index + 1}</span>
+        ) : (
+          <span className="text-base-content/60 text-xs tracking-widest">
+            ⋮⋮
+          </span>
+        )}
       </span>
 
-      <span className="flex-1">{entry.text}</span>
+      <span className="min-w-0 flex-1 wrap-break-word">{entry.text}</span>
 
-      <button
-        type="button"
-        className={btnClass}
-        disabled={index === 0}
-        onClick={() => onMove(index, index - 1)}
-        aria-label={`Move "${entry.text}" up`}
-      >
-        ⬆️
-      </button>
-      <button
-        type="button"
-        className={btnClass}
-        disabled={index === total - 1}
-        onClick={() => onMove(index, index + 1)}
-        aria-label={`Move "${entry.text}" down`}
-      >
-        ⬇️
-      </button>
+      <div className="flex w-full items-center justify-end gap-3 sm:w-auto sm:shrink-0 sm:justify-start">
+        <button
+          type="button"
+          className={btnClass}
+          disabled={index === 0}
+          onClick={() => onMove(index, index - 1)}
+          aria-label={`Move "${entry.text}" up`}
+        >
+          ⬆️
+        </button>
+        <button
+          type="button"
+          className={btnClass}
+          disabled={index === total - 1}
+          onClick={() => onMove(index, index + 1)}
+          aria-label={`Move "${entry.text}" down`}
+        >
+          ⬇️
+        </button>
 
-      <button
-        type="button"
-        className={btnClass}
-        onClick={() => onRemove(entry.id)}
-        aria-label={`Remove "${entry.text}"`}
-      >
-        🚮
-      </button>
+        <button
+          type="button"
+          className={btnClass}
+          onClick={() => onRemove(entry.id)}
+          aria-label={`Remove "${entry.text}"`}
+        >
+          🚮
+        </button>
+      </div>
     </li>
   );
 }
@@ -79,12 +89,14 @@ export function SortableList({
   label,
   initialItems = [],
   placeholder = "Add an item…",
+  numbered = false,
   onChangeAction,
 }: {
   name: string;
   label: string;
   initialItems?: string[];
   placeholder?: string;
+  numbered?: boolean;
   onChangeAction?: (items: string[]) => void;
 }) {
   const [entries, setEntries] = useState<Entry[]>(
@@ -122,33 +134,32 @@ export function SortableList({
     });
 
   return (
-    <fieldset>
-      <label className="font-semibold">
-        {label}
+    <fieldset className="flex flex-col gap-2">
+      <legend className="font-medium">{label}</legend>
 
-        <div className="mt-2 mb-3 flex gap-2">
-          <input
-            ref={inputRef}
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                add();
-              }
-            }}
-            placeholder={placeholder}
-          />
-          <button
-            type="button"
-            onClick={add}
-            disabled={!draft.trim()}
-            className={`inline-flex items-center gap-1 ${!draft.trim() ? "opacity-50" : ""}`}
-          >
-            ➕ Add
-          </button>
-        </div>
-      </label>
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <input
+          ref={inputRef}
+          className="input"
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              add();
+            }
+          }}
+          placeholder={placeholder}
+        />
+        <button
+          type="button"
+          className="btn btn-sm btn-outline sm:shrink-0"
+          onClick={add}
+          disabled={!draft.trim()}
+        >
+          + Add
+        </button>
+      </div>
 
       <DragDropProvider
         onDragEnd={(event) => {
@@ -159,13 +170,14 @@ export function SortableList({
           if (initialIndex !== index) moveIndexes(initialIndex, index);
         }}
       >
-        <ul className="text-base-300 grid gap-1.5">
+        <ul className="grid gap-2">
           {entries.map((entry, index) => (
             <Row
               key={entry.id}
               entry={entry}
               index={index}
               total={entries.length}
+              numbered={numbered}
               onRemove={remove}
               onMove={moveIndexes}
             />
@@ -173,14 +185,14 @@ export function SortableList({
         </ul>
       </DragDropProvider>
 
+      {entries.length === 0 && (
+        <p className="rounded-field border-base-300 bg-base-200/40 text-base-content/60 mx-2 border border-dashed px-3 py-4 text-center">
+          Nothing here yet — add {numbered ? "a step" : "an item"} above.
+        </p>
+      )}
+
       {entries.map((e) => (
-        <input
-          key={e.id}
-          type="hidden"
-          name={name}
-          value={e.text}
-          className="font-black"
-        />
+        <input key={e.id} type="hidden" name={name} value={e.text} />
       ))}
     </fieldset>
   );
