@@ -1,3 +1,50 @@
 @import "tailwindcss";
-@plugin "daisyui";
 @import "@neondatabase/auth-ui/tailwind";
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark --prefersdark;
+}
+
+/* Neon Auth UI color overwrites */
+:root {
+  --background: var(--color-base-100);
+  --foreground: var(--color-base-content);
+
+  --card: var(--color-base-200);
+  --card-foreground: var(--color-base-content);
+
+  --popover: var(--color-base-200);
+  --popover-foreground: var(--color-base-content);
+
+  --primary: var(--color-primary);
+  --primary-foreground: var(--color-primary-content);
+
+  --secondary: var(--color-secondary);
+  --secondary-foreground: var(--color-secondary-content);
+
+  --accent: var(--color-base-300);
+  --accent-foreground: var(--color-base-content);
+
+  --muted: var(--color-base-200);
+  --muted-foreground: var(--color-base-content);
+  --border: var(--color-base-300);
+  --input: var(--color-base-100);
+
+  --destructive: var(--color-error);
+  --destructive-foreground: var(--color-error-content);
+
+  --ring: var(--color-primary);
+  --radius: 0.5rem;
+}
+
+/* Neon Auth UI style overwrites */
+.card {
+  outline-style: none;
+  &:focus {
+    outline-style: solid;
+  }
+}
+.btn {
+  border-style: none;
+}
