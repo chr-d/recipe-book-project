@@ -43,7 +43,7 @@ export function SearchBar({ initialQuery }: { initialQuery: string }) {
 
   return (
     <div className="relative mx-auto mb-8 max-w-md">
-      <label className="input flex w-full">
+      <label className="input bg-base-200 flex w-full">
         <svg
           className="h-[1em] opacity-50"
           xmlns="http://www.w3.org/2000/svg"

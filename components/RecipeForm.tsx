@@ -77,6 +77,7 @@ export function RecipeForm({
                 min="1"
                 className="input"
                 defaultValue={recipe?.cookTimeMinutes ?? ""}
+                required
               />
             </label>
             <label className="flex w-32 flex-col gap-2 sm:w-44">
@@ -87,6 +88,7 @@ export function RecipeForm({
                 min="1"
                 className="input"
                 defaultValue={recipe?.portionAmount ?? ""}
+                required
               />
             </label>
           </div>
