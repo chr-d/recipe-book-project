@@ -1,4 +1,5 @@
 import { RecipeGrid } from "@/components/RecipeGrid";
+import { RecipeGridLoading } from "@/components/RecipeGridLoading";
 import { SearchBar } from "@/components/SearchBar";
 import { getUserCookbook } from "@/db/queries";
 import { requireLogin } from "@/lib/auth/session";
@@ -18,7 +19,7 @@ export default async function Coobook({
   return (
     <>
       <SearchBar initialQuery={query} />
-      <Suspense key={query} fallback={<p>Loading results...</p>}>
+      <Suspense key={query} fallback={<RecipeGridLoading />}>
         <RecipeGrid resultPromise={resultPromise} query={query} />
       </Suspense>
     </>

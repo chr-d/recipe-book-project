@@ -1,5 +1,6 @@
 "use client";
 
+import { RecipeCard } from "@/components/RecipeCard";
 import { CookbookEntryWithRecipe, Recipe, RecipeWithCreator } from "@/types";
 import { use } from "react";
 
@@ -14,23 +15,26 @@ export function RecipeGrid({
   const recipes = use(resultPromise);
   return (
     <>
-      <h2>{query}</h2>
-      <ul>
+      <h2
+        aria-hidden={query ? undefined : true}
+        className="mb-4 min-h-6 text-sm font-medium uppercase tracking-wide text-base-content/60"
+      >
+        {query ? `Results for “${query}”` : "\u00A0"}
+      </h2>
+      <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))]">
         {recipes.map((item) => {
           const recipe = "recipe" in item ? item.recipe : item;
           const creatorName = "creatorName" in item ? item.creatorName : null;
-          const personalNotes =
-            "entry" in item ? item.entry.personalNotes : null;
 
           return (
-            <li key={recipe.id}>
-              {recipe.title}
-              {creatorName && ` by ${creatorName}`}
-              {personalNotes && ` — ${personalNotes}`}
-            </li>
+            <RecipeCard
+              key={recipe.id}
+              recipe={recipe}
+              creatorName={creatorName ?? undefined}
+            />
           );
         })}
-      </ul>
+      </div>
     </>
   );
 }
