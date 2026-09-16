@@ -10,6 +10,7 @@ import {
 import { auth } from "@/lib/auth/server";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export type ActionResult = {
   ok: boolean;
@@ -73,12 +74,16 @@ export async function createRecipe(
     return { ok: false, error: errorMessage };
   }
 
-  await db.insert(recipes).values({
-    ...parsed.data,
-    userId: session.data.user.id,
-  });
+  const created = await db
+    .insert(recipes)
+    .values({
+      ...parsed.data,
+      userId: session.data.user.id,
+    })
+    .returning({ id: recipes.id });
 
-  return { ok: true };
+  revalidatePath("/recipes");
+  redirect(`/recipes/${created[0].id}`);
 }
 
 export async function updateRecipe(
@@ -140,7 +145,8 @@ export async function updateRecipe(
     };
   }
 
-  return { ok: true };
+  revalidatePath(`/recipes/${recipeId}`);
+  redirect(`/recipes/${recipeId}`);
 }
 
 export async function deleteRecipe(recipeId: number): Promise<ActionResult> {

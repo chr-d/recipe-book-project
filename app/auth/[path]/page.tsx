@@ -7,5 +7,9 @@ export default async function AuthPage({
   params: Promise<{ path: string }>;
 }) {
   const { path } = await params;
-  return <AuthView path={path} redirectTo="/dashboard" />;
+  return (
+    <div className="flex min-h-[calc(100dvh-4rem)] items-center justify-center">
+      <AuthView path={path} redirectTo="/dashboard" />
+    </div>
+  );
 }

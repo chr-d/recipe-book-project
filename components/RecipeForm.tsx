@@ -32,77 +32,113 @@ export function RecipeForm({
   const listsEmpty = ingredients.length === 0 || instructions.length === 0;
 
   return (
-    <form action={action} key={recipe?.id} className="flex flex-col gap-2">
-      <label>
-        Title
-        <input name="title" defaultValue={recipe?.title} required />
-      </label>
+    <div className="mx-auto w-full lg:max-w-4xl">
+      <form action={action} key={recipe?.id} className="flex flex-col gap-6">
+        <h1 className="text-2xl font-bold">
+          {isEdit ? "Edit Recipe" : "New Recipe"}
+        </h1>
 
-      <label>
-        Description
-        <textarea name="description" defaultValue={recipe?.description ?? ""} />
-      </label>
+        <div className="rounded-box border-base-300 bg-base-200 flex flex-col gap-6 border p-4 sm:p-6">
+          <label className="flex w-full flex-col gap-2">
+            <span className="text-sm font-medium">Title</span>
+            <input
+              name="title"
+              className="input"
+              defaultValue={recipe?.title}
+              required
+            />
+          </label>
 
-      <label>
-        Image URL (optional)
-        <input
-          name="imageUrl"
-          type="url"
-          defaultValue={recipe?.imageUrl ?? ""}
-        />
-      </label>
+          <label className="flex w-full flex-col gap-2">
+            <span className="text-sm font-medium">Description</span>
+            <textarea
+              name="description"
+              className="textarea min-h-40 w-full"
+              defaultValue={recipe?.description ?? ""}
+            />
+          </label>
 
-      <div className="grid grid-cols-2 gap-4">
-        <label>
-          Cook Time (minutes)
-          <input
-            name="cookTimeMinutes"
-            type="number"
-            min="1"
-            defaultValue={recipe?.cookTimeMinutes ?? ""}
+          <label className="flex w-full flex-col gap-2">
+            <span className="text-sm font-medium">Image URL (optional)</span>
+            <input
+              name="imageUrl"
+              type="url"
+              className="input"
+              defaultValue={recipe?.imageUrl ?? ""}
+            />
+          </label>
+
+          <div className="flex flex-wrap gap-6">
+            <label className="flex w-32 flex-col gap-2 sm:w-44">
+              <span className="text-sm font-medium">Cook time (min)</span>
+              <input
+                name="cookTimeMinutes"
+                type="number"
+                min="1"
+                className="input"
+                defaultValue={recipe?.cookTimeMinutes ?? ""}
+                required
+              />
+            </label>
+            <label className="flex w-32 flex-col gap-2 sm:w-44">
+              <span className="text-sm font-medium">Portions</span>
+              <input
+                name="portionAmount"
+                type="number"
+                min="1"
+                className="input"
+                defaultValue={recipe?.portionAmount ?? ""}
+                required
+              />
+            </label>
+          </div>
+
+          <label className="flex w-full flex-col gap-2">
+            <span className="text-sm font-medium">Tags (comma-separated)</span>
+            <input
+              name="tags"
+              className="input"
+              defaultValue={recipe?.tags.join(", ") ?? ""}
+              placeholder="italian, dinner, vegetarian"
+            />
+          </label>
+
+          <SortableList
+            name="ingredients"
+            label="Ingredients"
+            initialItems={recipe?.ingredients ?? []}
+            onChangeAction={setIngredients}
+            placeholder="500g flour"
           />
-        </label>
-        <label>
-          Portions
-          <input
-            name="portionAmount"
-            type="number"
-            min="1"
-            defaultValue={recipe?.portionAmount ?? ""}
+
+          <SortableList
+            name="instructions"
+            label="Instructions"
+            initialItems={recipe?.instructions ?? []}
+            onChangeAction={setInstructions}
+            placeholder="Preheat oven to 180°C"
+            numbered
           />
-        </label>
-      </div>
 
-      <label>
-        Tags (comma-separated)
-        <input
-          name="tags"
-          defaultValue={recipe?.tags.join(", ") ?? ""}
-          placeholder="italian, dinner, vegetarian"
-        />
-      </label>
+          <div className="border-base-300 flex flex-col gap-3 border-t pt-4">
+            {state && !state.ok && (
+              <p className="text-error text-sm font-medium">{state.error}</p>
+            )}
 
-      <SortableList
-        name="ingredients"
-        label="Ingredients"
-        initialItems={recipe?.ingredients ?? []}
-        onChangeAction={setIngredients}
-        placeholder="500g flour"
-      />
-
-      <SortableList
-        name="instructions"
-        label="Instructions"
-        initialItems={recipe?.instructions ?? []}
-        onChangeAction={setInstructions}
-        placeholder="Preheat oven to 180°C"
-      />
-
-      {state && !state.ok && <p className="error">{state.error}</p>}
-
-      <button type="submit" disabled={pending || listsEmpty}>
-        {pending ? "Saving..." : isEdit ? "Update Recipe" : "Create Recipe"}
-      </button>
-    </form>
+            <button
+              type="submit"
+              className="btn btn-primary w-fit"
+              disabled={pending || listsEmpty}
+            >
+              {pending
+                ? "Saving..."
+                : isEdit
+                  ? "Update Recipe"
+                  : "Create Recipe"}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   );
 }

@@ -10,5 +10,7 @@ export const config = {
     // Protected routes requiring authentication
     "/account/:path*",
     "/dashboard/:path*",
+    "/recipes/add",
+    "/recipes/:id*/edit",
   ],
 };
