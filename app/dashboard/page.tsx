@@ -18,7 +18,15 @@ export default async function Dashboard() {
             <Link href={"/dashboard/my-recipes"}>View all recipes →</Link>
           </div>
           <Suspense fallback={<p>Loading results...</p>}>
-            <RecipeGrid resultPromise={recipesPromise} query="" />
+            <RecipeGrid
+              resultPromise={recipesPromise}
+              query=""
+              empty={{
+                message: "You haven't created any recipes yet.",
+                btnLabel: "Create a recipe",
+                href: "/recipes/add",
+              }}
+            />
           </Suspense>
         </div>
         <div className="sm:w-1/2">
@@ -27,7 +35,15 @@ export default async function Dashboard() {
             <Link href={"/dashboard/cookbook"}>View all recipes →</Link>
           </div>
           <Suspense fallback={<p>Loading results...</p>}>
-            <RecipeGrid resultPromise={cookbookPromise} query="" />
+            <RecipeGrid
+              resultPromise={cookbookPromise}
+              query=""
+              empty={{
+                message: "Your cookbook is empty.",
+                btnLabel: "Browse recipes",
+                href: "/recipes",
+              }}
+            />
           </Suspense>
         </div>
       </div>

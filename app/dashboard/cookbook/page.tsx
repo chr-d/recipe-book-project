@@ -20,7 +20,15 @@ export default async function Coobook({
     <>
       <SearchBar initialQuery={query} />
       <Suspense key={query} fallback={<RecipeGridLoading />}>
-        <RecipeGrid resultPromise={resultPromise} query={query} />
+        <RecipeGrid
+          resultPromise={resultPromise}
+          query={query}
+          empty={{
+            message: "Your cookbook is empty.",
+            btnLabel: "Browse recipes",
+            href: "/recipes",
+          }}
+        />
       </Suspense>
     </>
   );

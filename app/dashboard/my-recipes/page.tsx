@@ -20,7 +20,15 @@ export default async function UserRecipes({
     <>
       <SearchBar initialQuery={query} />
       <Suspense key={query} fallback={<RecipeGridLoading />}>
-        <RecipeGrid resultPromise={resultPromise} query={query} />
+        <RecipeGrid
+          resultPromise={resultPromise}
+          query={query}
+          empty={{
+            message: "You haven't created any recipes yet.",
+            btnLabel: "Create a recipe",
+            href: "/recipes/add",
+          }}
+        />
       </Suspense>
     </>
   );
