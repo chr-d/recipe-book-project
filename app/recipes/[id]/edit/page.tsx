@@ -1,7 +1,13 @@
 import { RecipeForm } from "@/components/RecipeForm";
 import { getRecipeById } from "@/db/queries";
 import { auth } from "@/lib/auth/server";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Edit Recipe - mise",
+  description: "Find and share delicious recipes.",
+};
 
 export default async function EditRecipe({
   params,

@@ -3,7 +3,13 @@ import { RecipeGridLoading } from "@/components/RecipeGridLoading";
 import { SearchBar } from "@/components/SearchBar";
 import { getUserRecipes } from "@/db/queries";
 import { requireLogin } from "@/lib/auth/session";
+import type { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "My Recipes - mise",
+  description: "Find and share delicious recipes.",
+};
 
 export default async function UserRecipes({
   searchParams,
