@@ -5,6 +5,13 @@
     light --default,
     dark --prefersdark;
 }
+@theme {
+  /* Option A: Add it as a custom utility class (e.g., font-poppins) */
+  --font-pinyon-script: var(--font-pinyon-script), sans-serif;
+
+  /* Option B: Or override Tailwind's default sans-serif font globally */
+  /* --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif; */
+}
 
 /* Neon Auth UI color overwrites */
 :root {
@@ -26,10 +33,10 @@
   --accent: var(--color-base-300);
   --accent-foreground: var(--color-base-content);
 
-  --muted: var(--color-base-200);
+  --muted: var(--color-primary);
   --muted-foreground: var(--color-base-content);
   --border: var(--color-base-300);
-  --input: var(--color-base-100);
+  --input: var(--color-neutral);
 
   --destructive: var(--color-error);
   --destructive-foreground: var(--color-error-content);
