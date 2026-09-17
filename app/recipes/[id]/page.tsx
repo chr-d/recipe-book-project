@@ -77,8 +77,9 @@ export default async function RecipeDetails({ params }: Props) {
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
+                      width="20"
+                      height="20"
                       fill="none"
-                      className="h-full w-full px-0 py-1"
                     >
                       <path
                         fillRule="evenodd"
@@ -102,8 +103,9 @@ export default async function RecipeDetails({ params }: Props) {
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
                       fill="none"
-                      className="block h-full w-full px-0 py-1"
                     >
                       <path
                         d="M15.4561 9.42422C15.1273 9.1723 14.6565 9.23463 14.4046 9.56344C14.1527 9.89224 14.215 10.363 14.5438 10.6149C15.1139 11.0517 15.5741 11.632 15.8722 12.304C16.0401 12.6827 16.4832 12.8535 16.8619 12.6855C17.2405 12.5176 17.4113 12.0745 17.2434 11.6958C16.8433 10.794 16.2252 10.0134 15.4561 9.42422Z"
@@ -162,7 +164,15 @@ export default async function RecipeDetails({ params }: Props) {
               <ul>
                 {recipe.ingredients.map((ingredient, i) => (
                   <li key={i} className="py-2">
-                    {ingredient}
+                    <div className="flex gap-2">
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-sm bg-primary peer"
+                      />
+                      <span className="peer-checked:line-through peer-checked:opacity-50">
+                        {ingredient}
+                      </span>
+                    </div>
                   </li>
                 ))}
               </ul>
