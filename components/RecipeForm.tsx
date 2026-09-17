@@ -40,7 +40,7 @@ export function RecipeForm({
 
         <div className="rounded-box border-base-300 bg-base-200 flex flex-col gap-6 border p-4 sm:p-6">
           <label className="flex w-full flex-col gap-2">
-            <span className="text-sm font-medium">Title</span>
+            <span className="text-primary text-sm font-medium">Title</span>
             <input
               name="title"
               className="input"
@@ -50,7 +50,9 @@ export function RecipeForm({
           </label>
 
           <label className="flex w-full flex-col gap-2">
-            <span className="text-sm font-medium">Description</span>
+            <span className="text-primary text-sm font-medium">
+              Description
+            </span>
             <textarea
               name="description"
               className="textarea min-h-40 w-full"
@@ -59,7 +61,9 @@ export function RecipeForm({
           </label>
 
           <label className="flex w-full flex-col gap-2">
-            <span className="text-sm font-medium">Image URL (optional)</span>
+            <span className="text-primary text-sm font-medium">
+              Image URL (optional)
+            </span>
             <input
               name="imageUrl"
               type="url"
@@ -70,7 +74,9 @@ export function RecipeForm({
 
           <div className="flex flex-wrap gap-6">
             <label className="flex w-32 flex-col gap-2 sm:w-44">
-              <span className="text-sm font-medium">Cook time (min)</span>
+              <span className="text-primary text-sm font-medium">
+                Cook time (min)
+              </span>
               <input
                 name="cookTimeMinutes"
                 type="number"
@@ -81,7 +87,7 @@ export function RecipeForm({
               />
             </label>
             <label className="flex w-32 flex-col gap-2 sm:w-44">
-              <span className="text-sm font-medium">Portions</span>
+              <span className="text-primary text-sm font-medium">Portions</span>
               <input
                 name="portionAmount"
                 type="number"
@@ -94,7 +100,9 @@ export function RecipeForm({
           </div>
 
           <label className="flex w-full flex-col gap-2">
-            <span className="text-sm font-medium">Tags (comma-separated)</span>
+            <span className="text-primary text-sm font-medium">
+              Tags (comma-separated)
+            </span>
             <input
               name="tags"
               className="input"

@@ -16,30 +16,30 @@ export default function Home() {
         }}
       >
         <div className="hero-overlay"></div>
-        <div className="hero-content text-neutral-content justify-self-start text-left sm:ml-14">
+        <div className="hero-content text-neutral-content justify-self-start text-left sm:ml-20">
           <div className="max-w-md">
-            <h1 className="mb-5 text-5xl font-bold">mise-en-place</h1>
+            <h1 className="font-pinyon-script mb-3 text-7xl">mise</h1>
             <div className="mb-5">
-              <p>
-                mise, short for &quot;mise en place&quot;, is a French culinary
-                phrase which means &quot;putting into place&quot;.
-              </p>
-              <p>
-                This means the preparatory provision of all ingredients and
-                working tools before cooking.
+              <p className="text-pretty">
+                short for French mise en place — &quot;everything in its
+                place&quot; brings culinary order to your kitchen. Just like top
+                chefs prepare their ingredients before cooking, our recipe
+                platform organizes your shopping lists, step-by-step prep, and
+                timings into one seamless workspace. No chaos, no missing
+                spices—just pure cooking joy, ready when you are.
               </p>
             </div>
             <div className="flex gap-4">
-              <Link href={"/auth/sign-up"} className="btn btn-primary">
-                Create an account
+              <Link href={"/auth/sign-up"} className="btn btn-secondary">
+                Create Account
               </Link>
-              <Link href={"/recipes"} className="btn btn-primary">
-                Browse recipes
+              <Link href={"/recipes"} className="btn btn-secondary">
+                Browse Recipes
               </Link>
             </div>
           </div>
         </div>
-        <div className="hero-content mt-100">
+        <div className="hero-content text-neutral-content mt-110">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="64"
