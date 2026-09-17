@@ -13,13 +13,33 @@ const pinyonScript = Pinyon_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Recipe Book",
-  description: "Recipe Book project",
+  title: "mise - everything in its place",
+  description: "Find and share delicious recipes.",
 };
+
+const themeInitScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem("theme");
+    var theme = stored === "saffron" || stored === "cast-iron"
+      ? stored
+      : (matchMedia("(prefers-color-scheme: dark)").matches ? "cast-iron" : "saffron");
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (e) {}
+})();
+`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={pinyonScript.variable} suppressHydrationWarning>
+      <head>
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧑‍🍳</text></svg>"
+        />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body>
         <NeonAuthUIProvider authClient={authClient}>
           <Header />

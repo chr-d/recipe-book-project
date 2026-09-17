@@ -1,5 +1,6 @@
 "use client";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { authClient } from "@/lib/auth/client";
 import { UserButton } from "@neondatabase/auth/react";
 import Link from "next/link";
@@ -9,7 +10,7 @@ export default function Header() {
   const signedIn = !!session?.user;
 
   return (
-    <header className="bg-base-100 sticky top-0 z-50 border-b">
+    <header className="bg-base-300 sticky top-0 z-50 border-b">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
         <nav className="flex items-center gap-4">
           <Link href={"/"} className="flex h-16 items-center gap-2">
@@ -69,6 +70,9 @@ export default function Header() {
               },
             ]}
           />
+          <div className="xs:inline hidden">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </header>
